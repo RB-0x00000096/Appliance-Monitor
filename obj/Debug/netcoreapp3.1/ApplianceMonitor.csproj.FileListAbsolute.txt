@@ -1,0 +1,13 @@
+C:\Users\ianca\source\repos\ApplianceMonitor\bin\Debug\netcoreapp3.1\ApplianceMonitor.exe
+C:\Users\ianca\source\repos\ApplianceMonitor\bin\Debug\netcoreapp3.1\ApplianceMonitor.deps.json
+C:\Users\ianca\source\repos\ApplianceMonitor\bin\Debug\netcoreapp3.1\ApplianceMonitor.runtimeconfig.json
+C:\Users\ianca\source\repos\ApplianceMonitor\bin\Debug\netcoreapp3.1\ApplianceMonitor.runtimeconfig.dev.json
+C:\Users\ianca\source\repos\ApplianceMonitor\bin\Debug\netcoreapp3.1\ApplianceMonitor.dll
+C:\Users\ianca\source\repos\ApplianceMonitor\bin\Debug\netcoreapp3.1\ApplianceMonitor.pdb
+C:\Users\ianca\source\repos\ApplianceMonitor\obj\Debug\netcoreapp3.1\ApplianceMonitor.csprojAssemblyReference.cache
+C:\Users\ianca\source\repos\ApplianceMonitor\obj\Debug\netcoreapp3.1\ApplianceMonitor.AssemblyInfoInputs.cache
+C:\Users\ianca\source\repos\ApplianceMonitor\obj\Debug\netcoreapp3.1\ApplianceMonitor.AssemblyInfo.cs
+C:\Users\ianca\source\repos\ApplianceMonitor\obj\Debug\netcoreapp3.1\ApplianceMonitor.csproj.CoreCompileInputs.cache
+C:\Users\ianca\source\repos\ApplianceMonitor\obj\Debug\netcoreapp3.1\ApplianceMonitor.dll
+C:\Users\ianca\source\repos\ApplianceMonitor\obj\Debug\netcoreapp3.1\ApplianceMonitor.pdb
+C:\Users\ianca\source\repos\ApplianceMonitor\obj\Debug\netcoreapp3.1\ApplianceMonitor.genruntimeconfig.cache
