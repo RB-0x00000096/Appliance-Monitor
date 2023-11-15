@@ -3,6 +3,8 @@
 namespace ApplianceMonitor
 {
     enum appliances { electricity, water };
+    enum message_type {INFO, WARNING, ALERT};
+    enum message {ELECTRICITYLIMIT_SOON, ELECTRICITYLIMIT_OVERDUE, WATERLIMIT_SOON, WATERLIMIT_OVERDUE};
 
     class Program
     {
@@ -11,9 +13,13 @@ namespace ApplianceMonitor
         static ConsoleKey keyConfirm = ConsoleKey.Enter;
         static ConsoleKey keyCancel = ConsoleKey.Escape;
 
+        static ConsoleKeyInfo keyInput;
+
         static DateTime timeNow;
         static DateTime timeLast;
         static TimeSpan timeDiff;
+
+        static message msg = new message();
 
         static void StartUp() 
         {
@@ -43,75 +49,116 @@ namespace ApplianceMonitor
             waterUse += waterRate * (float)timeDiff.TotalSeconds;
         }
 
-        static void ElectricMenu() 
+        static void UsageMenu() 
         {
             Console.Clear();
 
             UpdateTime();
 
-            Console.WriteLine("[Electricity]\n");
+            Console.WriteLine("[Usage]\n");
 
             Console.Write("Electricity Used (kW/h): " + electricUse + "/" + electricLimit + "\n\n");
-
-            Console.ReadKey();
-
-        }
-
-        static void WaterMenu() 
-        {
-            Console.Clear();
-
-            UpdateTime();
-
-            Console.WriteLine("[Water]\n");
-
             Console.Write("Water Used (L): " + waterUse + "/" + waterLimit + "\n\n");
 
             Console.ReadKey();
+
         }
 
-        static void Message() 
+        static void SettingMenu() 
         {
-            
+            Console.WriteLine("[Setting]");
+
+            Console.Write("1. Set Electricity Limit\n" +
+                          "2. Set Water Limit\n" +
+                          "3. Back to Main Menu\n\n" +
+                          "Enter a number and press [ENTER]\n\n");
+
+            keyInput = Console.ReadKey(true);
+
+            switch (keyInput.Key)
+            {
+                case ConsoleKey.D1:
+                case ConsoleKey.NumPad1:
+                    Console.Write("Set Electricity Limit: ");
+                    //electricLimit = Console.ReadLine();
+
+                    break;
+
+                case ConsoleKey.D2:
+                case ConsoleKey.NumPad2:
+
+                    break;
+
+                case ConsoleKey.D3:
+                case ConsoleKey.NumPad3:
+
+                    break;
+
+                default:
+                    break;
+
+            }
+        }
+
+        static void CheckUsage() 
+        {
             if (electricUse >= electricLimit)
             {
-                Console.BackgroundColor = ConsoleColor.Red;
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.Write("Alert! Electricity usage exceeds limit by " + (electricUse - electricLimit) + "kWh");
-                Console.ResetColor();
-                Console.WriteLine();
+                Message(message.ELECTRICITYLIMIT_OVERDUE, message_type.ALERT);
             }
             else if ((electricLimit - electricUse) <= 1000) 
             {
-                Console.BackgroundColor = ConsoleColor.Yellow;
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.Write("Warning! Electricity usage is to exceed limit in " + (electricLimit - electricUse) + "kWh");
-                Console.ResetColor();
-                Console.WriteLine();
+                Message(message.ELECTRICITYLIMIT_SOON, message_type.WARNING);
             }
 
             if (waterUse >= waterLimit)
             {
-                Console.BackgroundColor = ConsoleColor.Red;
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.Write("Alert! Water usage exceeds limit by " + (waterUse - waterLimit) + "L");
-                Console.ResetColor();
-                Console.WriteLine();
+                Message(message.WATERLIMIT_OVERDUE, message_type.ALERT);
             }
             else if ((waterLimit - waterUse) <= 1000)
             {
+                Message(message.WATERLIMIT_SOON, message_type.WARNING);
+            }
+        }
+
+        static void Message(message msg, message_type msgType) 
+        {
+            if (msgType == message_type.ALERT)
+            {
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.Write("ALERT:");
+            }
+            else if (msgType == message_type.WARNING) 
+            {
                 Console.BackgroundColor = ConsoleColor.Yellow;
                 Console.ForegroundColor = ConsoleColor.Black;
-                Console.Write("Warning! Water usage is to exceed limit in " + (waterLimit - waterUse) + "L");
-                Console.ResetColor();
-                Console.WriteLine();
+                Console.Write("WARNING:");
             }
 
-            
+            Console.ResetColor();
+            Console.Write(" ");
 
-            
+            switch (msg) 
+            {
+                case message.ELECTRICITYLIMIT_OVERDUE:
+                    Console.Write("Electricity usage exceeds limit by " + (electricUse - electricLimit) + "kWh");
+                    break;
 
-            Console.WriteLine();
+                case message.ELECTRICITYLIMIT_SOON:
+                    Console.Write("Electricity usage is to exceed limit in " + (electricLimit - electricUse) + "kWh");
+                    break;
+
+                case message.WATERLIMIT_OVERDUE:
+                    Console.Write("Water usage exceeds limit by " + (waterUse - waterLimit) + "L");
+                    break;
+
+                case message.WATERLIMIT_SOON:
+                    Console.Write("Water usage is to exceed limit in " + (waterLimit - waterUse) + "L");
+                    break;
+            }
+
+            Console.Write("\n\n");
         }
 
         static int PowerOff() 
@@ -129,8 +176,6 @@ namespace ApplianceMonitor
             StartUp();
             SetLimit(2000.0f, 2000.0f);
             
-
-            int choice;
             int power = 1;
 
             do 
@@ -140,29 +185,30 @@ namespace ApplianceMonitor
                 timeNow = DateTime.Now;
                 Console.WriteLine(timeNow);
 
-                Message();
-
-                choice = 0; 
+                CheckUsage();
 
                 Console.WriteLine("What would you like to monitor? (Enter a number and press Enter)");
 
-                Console.WriteLine("1. Electricity\n2. Water\n3. Power Off");
+                Console.WriteLine("1. Check Usage\n2. Water\n3. Power Off");
 
-                    //choice = Console.ReadLine();
+                keyInput = Console.ReadKey(true);
 
-                switch (Console.ReadLine())
+                switch (keyInput.Key)
                 {
-                    case "1":
-
-                        ElectricMenu();
+                    case ConsoleKey.D1:
+                    case ConsoleKey.NumPad1:
+                        
+                        UsageMenu();
                         break;
 
-                    case "2":
-
-                        WaterMenu();
+                    case ConsoleKey.D2:
+                    case ConsoleKey.NumPad2:
+                        
+                        SettingMenu();
                         break;
 
-                    case "3":
+                    case ConsoleKey.D3:
+                    case ConsoleKey.NumPad3:
 
                         power = PowerOff();
                         break;
